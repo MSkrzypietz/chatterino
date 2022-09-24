@@ -3,6 +3,10 @@ use wasm_bindgen_futures::spawn_local;
 use web_sys::window;
 use yew::prelude::*;
 
+mod components;
+
+use crate::components::chat::Chat;
+
 #[wasm_bindgen(module = "/public/glue.js")]
 extern "C" {
     #[wasm_bindgen(js_name = invokeHello, catch)]
@@ -34,6 +38,7 @@ pub fn app() -> Html {
     html! {
         <div>
             <h2 class={"heading"}>{message}</h2>
+            <Chat />
         </div>
     }
 }
