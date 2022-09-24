@@ -23,7 +23,7 @@ impl Component for MessageList {
             {
                 ctx.props().messages.iter().map(|msg| {
                     html! {
-                        <div>
+                        <div key={msg.id}>
                             {format!("{}: {}", msg.username, msg.content)}
                         </div>
                     }

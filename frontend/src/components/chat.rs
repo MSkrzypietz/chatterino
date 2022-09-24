@@ -16,10 +16,12 @@ impl Component for Chat {
     fn view(&self, _ctx: &Context<Self>) -> Html {
         let messages: Vec<Message> = vec![
             Message {
+                id: 0,
                 username: "me".to_string(),
                 content: "test message 1".to_string(),
             },
             Message {
+                id: 1,
                 username: "you".to_string(),
                 content: "test message 2".to_string(),
             },
