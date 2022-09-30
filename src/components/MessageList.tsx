@@ -1,4 +1,4 @@
-import { Component, createEffect, createRenderEffect, For, Ref } from "solid-js";
+import { Component, createEffect, For } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Event, listen } from '@tauri-apps/api/event';
 
@@ -10,20 +10,30 @@ interface Message {
 const MessageList: Component = () => {
 	const [state, setState] = createStore({
 		messages: [] as Message[],
-		scrollTop: 0,
+		autoScrollToEnd: true
 	});
 
-	let messagesEnd: HTMLDivElement | undefined;
+	let messagesEndDiv: HTMLDivElement | undefined;
+	let rootDiv: HTMLDivElement | undefined;
 
 	createEffect(() => {
 		listen("on_message", (event: Event<Message>) => {
 			setState('messages', (messages: Message[]) => [...messages, event.payload]);
-			messagesEnd?.scrollIntoView({ behavior: 'smooth' });
+			if (messagesEndDiv && state.autoScrollToEnd) {
+				messagesEndDiv.scrollIntoView({ behavior: 'smooth' });
+			}
 		})
 	});
 
+	const onScroll = () => {
+		if (rootDiv) {
+			const { scrollTop, scrollHeight, clientHeight } = rootDiv;
+			setState('autoScrollToEnd', () => scrollTop + clientHeight === scrollHeight);
+		}
+	};
+
 	return (
-		<div>
+		<div ref={rootDiv} onScroll={onScroll} class="h-full overflow-y-auto">
 			<For each={state.messages}>
 				{(message: Message) => (
 					<div class="flex gap-2 text-left text-white">
@@ -33,7 +43,7 @@ const MessageList: Component = () => {
 				)}
 			</For>
 			<div style={{ float: 'left', clear: 'both' }}
-				ref={messagesEnd}>
+				ref={messagesEndDiv}>
 			</div>
 		</div>
 	);
