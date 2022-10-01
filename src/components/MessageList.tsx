@@ -45,7 +45,7 @@ const MessageList: Component = () => {
 							{message.username}
 							<span class="text-white">:</span>
 						</div>
-						<div>{message.content}</div>
+						<div class="whitespace-normal">{message.content}</div>
 					</div>
 				)}
 			</For>
