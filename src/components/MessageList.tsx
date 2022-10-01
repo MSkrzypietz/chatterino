@@ -1,5 +1,6 @@
 import { Component, createEffect, For } from "solid-js";
 import { createStore } from "solid-js/store";
+import { debounce } from "@solid-primitives/scheduled";
 import { Event, listen } from '@tauri-apps/api/event';
 
 interface Message {
@@ -26,15 +27,15 @@ const MessageList: Component = () => {
 		})
 	});
 
-	const onScroll = () => {
+	const onScroll = debounce(() => {
 		if (rootDiv) {
 			const { scrollTop, scrollHeight, clientHeight } = rootDiv;
 			setState('autoScrollToEnd', () => scrollTop + clientHeight === scrollHeight);
 		}
-	};
+	}, 200);
 
 	return (
-		<div ref={rootDiv} onScroll={onScroll} class="h-full overflow-y-auto">
+		<div ref={rootDiv} onWheel={onScroll} class="h-full overflow-y-auto">
 			<For each={state.messages}>
 				{(message: Message) => (
 					<div class="flex gap-2 text-left text-white">
