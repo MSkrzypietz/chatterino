@@ -1,12 +1,13 @@
 use serde::Serialize;
 use tauri::{Manager, RunEvent};
 use twitch_irc::login::StaticLoginCredentials;
-use twitch_irc::message::ServerMessage;
+use twitch_irc::message::{RGBColor, ServerMessage};
 use twitch_irc::{ClientConfig, SecureTCPTransport, TwitchIRCClient};
 
 #[derive(Debug, Clone, Serialize)]
 struct Payload {
     username: String,
+    username_color: Option<RGBColor>,
     content: String,
 }
 
@@ -34,6 +35,7 @@ async fn main() {
                 let content = message.message_text;
                 let payload = Payload {
                     username: username.clone(),
+                    username_color: message.name_color,
                     content: content.clone(),
                 };
 

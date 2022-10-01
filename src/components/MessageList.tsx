@@ -4,6 +4,7 @@ import { Event, listen } from '@tauri-apps/api/event';
 
 interface Message {
 	username: string;
+	username_color: { r: number, g: number, b: number } | null;
 	content: string;
 }
 
@@ -37,7 +38,12 @@ const MessageList: Component = () => {
 			<For each={state.messages}>
 				{(message: Message) => (
 					<div class="flex gap-2 text-left text-white">
-						<div>{message.username}:</div>
+						<div style={{
+							color: `rgb(${message.username_color?.r} ${message.username_color?.g}  ${message.username_color?.b})`
+						}}>
+							{message.username}
+							<span class="text-white">:</span>
+						</div>
 						<div>{message.content}</div>
 					</div>
 				)}
