@@ -4,7 +4,7 @@ import MessageSubmit from "./MessageSubmit";
 
 const Chat: Component = () => {
 	return (
-		<div class="h-full flex flex-col gap-1">
+		<div class="flex flex-col flex-nowrap grow p-2 gap-1 overflow-y-auto">
 			<MessageList />
 			<MessageSubmit />
 		</div>
@@ -12,3 +12,4 @@ const Chat: Component = () => {
 };
 
 export default Chat;
+
